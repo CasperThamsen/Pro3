@@ -74,8 +74,6 @@ void genkendDTMFtoner(double stor, double lille){
         if (freq[5]-at < lille && freq[5]+at > lille){std::cout << "B" << std::endl; freqVals.push_back('B');}
         if (freq[6]-at < lille && freq[6]+at > lille){std::cout << "C" << std::endl; freqVals.push_back('C');}
         if (freq[7]-at < lille && freq[7]+at > lille){std::cout << "D" << std::endl; freqVals.push_back('D');
-            Pa_Sleep(200); //Er ikke 100% sikker på hvorfor det virker, men en aprubt paComplete giver fejl!
-            //måske vi i FFTComputing skal lave en special case der tager sig af nå end flag er nået så man kan free memory rigtigt
             Data->finished = paComplete;
         }
     }
@@ -126,6 +124,10 @@ void FFTComputing() {
         else{
             Pa_Sleep(15); //giver callbacken tid til at overføre til callbackInfo (vores ring buffer)
             //er i stedet for mutex lock men måske vi skal se anden steds. var et hurtigt fix
+        }
+
+        if(!FFTThreadBool){
+            break;
         }
     }
 }
