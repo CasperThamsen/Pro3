@@ -7,15 +7,53 @@
 #include <unistd.h>
 #include <string>
 
-#define SAMPLE_RATE (8000)
-#define TABLE_SIZE (8000)
+#define SAMPLE_RATE (44100)
+#define TABLE_SIZE (200)
 
 
 typedef struct{
-    float dtmf[16][TABLE_SIZE];
+    float dtmf[17][TABLE_SIZE];
     unsigned int dmtfValg;
     unsigned int phase;
 } paData;
+
+
+
+
+
+
+//HER
+std::vector<int> sequenceCharToSequenceInt(const std::vector<char>& conversionVector) {
+    std::vector<int> integerVector;
+    for (char c : conversionVector) {
+        switch (c) {
+            case '1': integerVector.push_back(0); break;
+            case '2': integerVector.push_back(1); break;
+            case '3': integerVector.push_back(2); break;
+            case 'A': integerVector.push_back(3); break;
+            case '4': integerVector.push_back(4); break;
+            case '5': integerVector.push_back(5); break;
+            case '6': integerVector.push_back(6); break;
+            case 'B': integerVector.push_back(7); break;
+            case '7': integerVector.push_back(8); break;
+            case '8': integerVector.push_back(9); break;
+            case '9': integerVector.push_back(10); break;
+            case 'C': integerVector.push_back(11); break;
+            case '*': integerVector.push_back(12); break;
+            case '0': integerVector.push_back(13); break;
+            case '#': integerVector.push_back(14); break;
+            case 'D': integerVector.push_back(15); break;
+            default: break;
+        }
+    }
+    return integerVector;
+}
+//HER
+
+
+
+
+
 
 
 static int audioCallback(const void* inputBuffer, void* outputBuffer,
@@ -35,7 +73,6 @@ static int audioCallback(const void* inputBuffer, void* outputBuffer,
     //Sammensætter og gør lyden klar til afspildning via *out++
     static unsigned long i;
     for (i = 0; i < framesPerBuffer; i++){
-
         *out++ = data->dtmf[data->dmtfValg][data->phase];
         if(data->dmtfValg == 16){
             *out++ = 0.0f;
@@ -75,6 +112,16 @@ int main(void)
     
     data.phase = 0;
 
+//TEST
+    std::vector<char> sequenceChar{'1', '2', '3', 'A', '4', '5', '6', 'B', '7', '8', '9', 'C', '*', '0', '#', 'D'};
+    std::vector<int> sequenceInteger = sequenceCharToSequenceInt(sequenceChar);
+
+    for (int i : sequenceInteger) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+//TEST
+
    Pa_Initialize();
     
 
@@ -94,20 +141,17 @@ int main(void)
         NULL,                 // No input
         &outputParameters,
         SAMPLE_RATE,
-        paFramesPerBufferUnspecified,
+        64,
         paClipOff,             // Don't clip out-of-range samples
         audioCallback,
         &data);
    
 
     Pa_StartStream(stream);
-    
-    std::vector<int> sequence = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,3,3,4,5,6,6,7,5,5,4,12,12,12,11,10,10,1,1,1,2,3,4,5,6,7,8,9,9,9,9};
-
-   
-    for(int i = 0; i < sequence.size(); i++){ // looper igennem sekvensen
-        data.dmtfValg = sequence[i];
-        usleep(20*1000); //hvor lang tid lyden spiller.
+       
+    for(int i = 0; i < sequenceInteger.size(); i++){ // looper igennem sekvensen
+        data.dmtfValg = sequenceInteger[i];
+        Pa_Sleep(200);
     } 
     
 
@@ -120,5 +164,3 @@ int main(void)
     Pa_Terminate();
     return 0;
 }
-
-//afspiller nu lyd nemt, men stadig med pops. (ved ikke fix, evt spørg vejleder.)
