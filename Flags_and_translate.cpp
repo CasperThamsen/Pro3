@@ -62,10 +62,8 @@ void bittotone(string input, char &tone)
         tone = 'D';
     }
 }
-void stringtotone(string import, vector<char> &x)
-{
-    for (int i = 0; i < import.length(); i++)
-    {
+void stringtotone(string import, vector<char> &x){
+    for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
         char input = import[i];
         asciitobit(input, BitSet);
@@ -74,12 +72,10 @@ void stringtotone(string import, vector<char> &x)
         string bit2;
         char tone1;
         char tone2;
-        for (int j = 0; j < 4; j++)
-        {
+        for (int j = 0; j < 4; j++){
             bit1 += test[j];
         }
-        for (int k = 4; k < 8; k++)
-        {
+        for (int k = 4; k < 8; k++){
             bit2 += test[k];
         }
         bittotone(bit1, tone1);
@@ -88,11 +84,11 @@ void stringtotone(string import, vector<char> &x)
         x.push_back(tone2);
     }
 }
-void tonetobit(vector<char> &x, vector<string> &y)
-{
+
+
+void tonetobit(vector<char> &x, vector<string> &y){
 string string1;
-    for (int i = 0; i < x.size(); i++)
-    {
+    for (int i = 0; i < x.size(); i++){
         if(x[i]== '1')
         {
         string1 = ("0000");
@@ -160,18 +156,20 @@ string string1;
         y.push_back(string1);
     }    
 }
-void bittobyte(vector<string> &y)
-{
+
+
+
+void bittobyte(vector<string> &y){
     vector<string> tempvec;
-    for (int i = 0; i < y.size(); i+=2)
-    {
+    for (int i = 0; i < y.size(); i+=2){
         string string1 = y[i]+y[i+1];
         tempvec.push_back(string1);
     }
     y=tempvec;
 }
-void bytetoascii(string &x,vector<string> &y)
-{
+
+
+void bytetoascii(string &x,vector<string> &y){
 string asciisttring;
     for (int i = 0; i < y.size(); i++)
     {
