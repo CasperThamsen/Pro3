@@ -194,13 +194,11 @@ for (int i = 0; i < x.size(); i++)
     vector<char> flag;
     flag.push_back('7');
     flag.push_back('2');
-    if (x[i]==x[i+1])
-    {
+    if (x[i]==x[i+1]){
     x.insert(x.begin()+i+1,flag.begin(),flag.end());
     i=i+2;
     }
-    if (x[i]=='7' && x[i+1]=='2')
-    {
+    if (x[i]=='7' && x[i+1]=='2'){
         x.insert(x.begin()+i,flag.begin(),flag.end());
     }
 
@@ -209,17 +207,16 @@ for (int i = 0; i < x.size(); i++)
 }
 
 }
-void removecheckfordupes(vector<char> &x)
-{
-    for (int i = 0; i < x.size(); i++)
-    {
+
+
+void removecheckfordupes(vector<char> &x){
+    for (int i = 0; i < x.size(); i++){
         if(x[i]=='7'&& x[i+1]=='2')
         x.erase(x.begin()+i,x.begin()+i+2);
-    }
-    
+    }    
 }
-void insertflags(vector<char> &x)
-{
+
+void insertflags(vector<char> &x){
     std::vector<char> flag;
     flag.push_back('3');
     flag.push_back('A');
@@ -227,40 +224,32 @@ void insertflags(vector<char> &x)
     endflag.push_back('3');
     endflag.push_back('4');
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++){
         x.insert(x.begin(), flag.begin(), flag.end());
         x.insert(x.end(), endflag.begin(), endflag.end());
-
     }
 }
-void checkcommand(vector<char> &x, string &y)
-{
-vector<char> test;
-if (x.size()>=6)
-{
-    for (int i = 0; i < 6; i++)
-    {
-        test.push_back(x[i]);
+
+
+void checkcommand(vector<char> &x, string &y){
+    vector<char> test;
+    if (x.size()>=6){
+        for (int i = 0; i < 6; i++){
+            test.push_back(x[i]);
+        }   
+    }else{
+        cout<<"Failure"<<endl;
     }
-    
-}
-else
-{
-    cout<<"Failure"<<endl;
-}
-tonetoascii(test,y);
+    tonetoascii(test,y);
 }
 
 
-int main()
-{
+int main(){
     vector<char> BitSekvens;
     string Kommandotest;
     string import = "2$2$2$2$2$2$";
     stringtotone(import,BitSekvens);
-    for (int i = 0; i < BitSekvens.size(); i++)
-    {
+    for (int i = 0; i < BitSekvens.size(); i++){
         cout<<BitSekvens[i]<<endl;
     }
     
