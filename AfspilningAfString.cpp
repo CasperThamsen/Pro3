@@ -190,12 +190,12 @@ int main(void){
 //String to be transmitted.
     string inputStringForTransmission = "Hello world";
     // string inputStringForTransmission = "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
-
+    cout << "\nTransmitted string: " << inputStringForTransmission << endl;
 
 //Convert from string to a vector of ASCII chars.
     vector<char> vectorOfAsciiChars;    
     stringToTone(inputStringForTransmission, vectorOfAsciiChars);
-    cout << "ASCII Chars:   "; //Testing
+    cout << "ASCII Chars:        "; //Testing
     for (int i = 0; i < vectorOfAsciiChars.size(); i++){
         cout<<vectorOfAsciiChars[i]<<",";
         if(0 == ((i+1)%2)){cout << " ";}
@@ -205,10 +205,10 @@ int main(void){
 
 //Convert fron vector of ASCII chars to vector of intergers.
     vector<int> vectorIntToBePlayed = vectorCharToVectorInt(vectorOfAsciiChars);
-    cout << "Integer value: "; //Testing
+    cout << "Integer value:      "; //Testing
     for (int i : vectorIntToBePlayed){std::cout << i << " ";}
     std::cout << std::endl;
-    cout << "Size of vector: " << vectorIntToBePlayed.size() << endl;
+    cout << "Size of vector:     " << vectorIntToBePlayed.size() << endl;
 
 //Vector of integers (startflag:159D and endflag:2*BD)
     vector<int> vectorStartFlag = {0,5,10,15};
