@@ -61,12 +61,12 @@ void removeRepeatedTones(vector<char> & Charvector){
             --i;
         }
     }
-    for (int i = 0; i < Charvector.size()-1; i++){
-        if((Charvector[i] == 'm') || ((int)Charvector[i] == 0)){
-            Charvector.erase(Charvector.begin()+i);
-            --i;
-        }
-    }
+    // for (int i = 0; i < Charvector.size()-1; i++){
+    //     if((Charvector[i] == 'm') || ((int)Charvector[i] == 0)){
+    //         Charvector.erase(Charvector.begin()+i);
+    //         --i;
+    //     }
+    // }
 }
 
 
@@ -133,7 +133,7 @@ char getMaxOccurringChar(vector<char> & nyTidCharVector){
 
 void checkForFlag(vector<char> & Charvector) {
     const std::string startFlag = "159D";
-    const std::string stopflag = "D259"; // skal laves om til en vi er sikker på ikke kan komme i ACII karaktere.
+    const std::string stopflag = "2*BD"; // skal laves om til en vi er sikker på ikke kan komme i ACII karaktere.
     int sidsteTiNumer = 30; //4*3buffer = 12 så mindst se 10 tilbage
 
     if ((Charvector.size() >= sidsteTiNumer) && (!TimingBool)) {
@@ -278,10 +278,7 @@ void FFT() {
             teller++;
             std::cout << "                      Ny tid " << teller << std::endl;
 
-            // if((teller > 0) && (tonerEnTid.size() == 3)){
-            //     alleTonerVector.push_back(tonerEnTid[1]);
-            //     tonerEnTid.clear();
-            // }
+
             if((teller > 0) && (tonerEnTid.size() > 0)){
 
                 alleTonerVector.push_back(getMaxOccurringChar(tonerEnTid));
@@ -292,9 +289,6 @@ void FFT() {
                 tonerEnTid.clear();
             }
         }
-
-        // checkForFlag(freqVals);
-
     }
 }
 
@@ -337,6 +331,61 @@ static int recordCallback(const void *inputBuffer, void *outputBuffer,
 }
 
 
+
+
+void toneToBit(vector<char> &Tones, vector<string> &BitSets){
+    string Placeholder;
+    for (int i = 0; i < Tones.size(); i++){
+        if(Tones[i]== '1'){Placeholder = ("0000");}
+        if(Tones[i]== '2'){Placeholder = ("0001");}
+        if(Tones[i]== '3'){Placeholder = ("0010");}
+        if(Tones[i]== 'A'){Placeholder = ("0011");}
+        if(Tones[i]== '4'){Placeholder = ("0100");}
+        if(Tones[i]== '5'){Placeholder = ("0101");}
+        if(Tones[i]== '6'){Placeholder = ("0110");}
+        if(Tones[i]== 'B'){Placeholder = ("0111");}
+        if(Tones[i]== '7'){Placeholder = ("1000");}
+        if(Tones[i]== '8'){Placeholder = ("1001");}
+        if(Tones[i]== '9'){Placeholder = ("1010");}
+        if(Tones[i]== 'C'){Placeholder = ("1011");}
+        if(Tones[i]== '*'){Placeholder = ("1100");}
+        if(Tones[i]== '0'){Placeholder = ("1101");}
+        if(Tones[i]== '#'){Placeholder = ("1110");}
+        if(Tones[i]== 'D'){Placeholder = ("1111");}
+        BitSets.push_back(Placeholder);
+    }    
+}
+
+
+void bitToByte(vector<string> &BitsetstoByte){
+    vector<string> tempvec;
+    for (int i = 0; i < BitsetstoByte.size(); i+=2){ //takes every bitset and combines them to a byte
+        string string1 = BitsetstoByte[i]+BitsetstoByte[i+1];
+        tempvec.push_back(string1);
+    }
+    BitsetstoByte=tempvec;
+}
+
+void byteToAscii(string &asciiString,vector<string> &byte){
+    string Placeholder;
+    for (int i = 0; i < byte.size(); i++){
+        int asciiVal=bitset<8>(byte[i]).to_ulong(); //takes the byte and converts it into a ascii char
+        Placeholder.push_back(static_cast<char>(asciiVal));
+    }
+    asciiString=Placeholder;
+}
+
+
+void toneToAscii(vector<char> &input,string &output){
+vector<string> placeholder;
+toneToBit(input,placeholder);
+bitToByte(placeholder);
+byteToAscii(output,placeholder);
+}
+
+
+
+
 int main(void){
     PaStreamParameters inputParameters;
     PaStream *stream;
@@ -368,7 +417,7 @@ int main(void){
         NULL, /* &outputParameters, */
         SAMPLE_RATE,
         FRAMES_PER_BUFFER,
-        paNoFlag,
+        paNoFlag,   
         recordCallback,
         Data);
     checkErr(err);
@@ -399,6 +448,13 @@ int main(void){
     }
     cout << endl;
 
+
+    cout << "Tone To Ascii: " << endl;
+    string output;
+    toneToAscii(alleTonerVector, output);
+    output;
+
+
     fftw_destroy_plan(Data->plan);
     fftw_free(Data->in);
     fftw_free(Data->out);
@@ -407,7 +463,3 @@ int main(void){
 
     return 0;
 }
-
-
-
-//lav stopflag 
