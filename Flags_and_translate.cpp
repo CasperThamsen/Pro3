@@ -3,10 +3,6 @@
 #include <string>
 #include <vector>
 using namespace std;
-vector<char> BitSekvens;
-string output ("0");
-vector<char> Kommando;
-string Kommandotest;
 void asciitobit(char input, bitset<8> &x)
 {
     // Input character
@@ -146,7 +142,7 @@ string string1;
         {
         string1 = ("0111");
         }
-        if(BitSekvens[i]== '7')
+        if(x[i]== '7')
         {
         string1 = ("1000");
         }
@@ -178,9 +174,8 @@ string string1;
         {
         string1 = ("1111");
         }
-    y[i]=string1;
-    }
-    
+        y.push_back(string1);
+    }    
 }
 void bittobyte(vector<string> &y)
 {
@@ -204,11 +199,10 @@ x=asciisttring;
 }
 void tonetoascii(vector<char> &x,string &y)
 {
-vector<string> placeholder(x.size());
+vector<string> placeholder;
 tonetobit(x,placeholder);
 bittobyte(placeholder);
 bytetoascii(y,placeholder);
-
 }
 void checkfordupes(vector<char> &x)
 {
@@ -260,34 +254,34 @@ void insertflags(vector<char> &x)
 void checkcommand(vector<char> &x, string &y)
 {
 vector<char> test;
-for (int i = 0; i < 12; i++)
+if (x.size()>=6)
 {
-    test.push_back(x[i]);
+    for (int i = 0; i < 6; i++)
+    {
+        test.push_back(x[i]);
+    }
+    
+}
+else
+{
+    cout<<"Failure"<<endl;
 }
 tonetoascii(test,y);
-
 }
 
 
 int main()
 {
-    string import = "2$";
-    stringtotone(import);
-    insertflags(BitSekvens);
-    checkfordupes(BitSekvens);
-    // for (int i = 0; i < BitSekvens.size(); i++)
-    // {
-    //     cout<<BitSekvens[i]<<endl;
-    // }
-    removecheckfordupes(BitSekvens);
+    vector<char> BitSekvens;
+    string Kommandotest;
+    string import = "2$2$2$2$2$2$";
+    stringtotone(import,BitSekvens);
     for (int i = 0; i < BitSekvens.size(); i++)
     {
-       cout<<BitSekvens[i]<<endl;
+        cout<<BitSekvens[i]<<endl;
     }
-    //tonetoascii(BitSekvens,output);
-    //cout<<output<<endl;
+    
     checkcommand(BitSekvens,Kommandotest);
     cout<<Kommandotest<<endl;
-
     return 0;
 }
