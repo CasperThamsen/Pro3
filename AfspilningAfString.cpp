@@ -54,11 +54,10 @@ static int audioCallback(const void* inputBuffer, void* outputBuffer,
 }
 
 
-
-void asciiToBit(char inputChar, bitset<8> &x){
-    unsigned char byteValue = static_cast<unsigned char>(inputChar);
-    // Display the result as an 8-bit binary string
-    bitset<8> binaryRepresentation(byteValue);
+void asciiToBit(char input, bitset<8> &x){
+    char inputChar = input;
+    unsigned char byteValue = static_cast<unsigned char>(inputChar); //change from char to byte in decimal value
+    bitset<8> binaryRepresentation(byteValue); // change from byte to 8bit reprensentaion
     x = binaryRepresentation;
 }
 
@@ -83,28 +82,30 @@ void bitToTone(string input, char &tone){
 }
 
 
-void stringToTone(string import, vector<char> &vectorOfAsciiChars){
+
+void stringToTone(string import, vector<char> &Tone){
     for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
-        char input = import[i];
-        asciiToBit(input, BitSet);
-        string test = BitSet.to_string();
+        char input = import[i]; //Takes every char from the string
+        asciiToBit(input, BitSet); //Turns it into a 8bit reprenstation
+        string test = BitSet.to_string(); //changes it from Bitset to a string
         string bit1;
         string bit2;
-        for (int j = 0; j < 4; j++){
-            bit1 += test[j];
-        }
-        for (int k = 4; k < 8; k++){
-            bit2 += test[k];
-        }
         char tone1;
         char tone2;
-        bitToTone(bit1, tone1);
-        bitToTone(bit2, tone2);
-        vectorOfAsciiChars.push_back(tone1);
-        vectorOfAsciiChars.push_back(tone2);
+        for (int j = 0; j < 4; j++){ //Takes the first 4 bits
+            bit1 += test[j];
+        }
+        for (int k = 4; k < 8; k++){ //Takes the last 4 bits
+            bit2 += test[k];
+        }
+        bitToTone(bit1, tone1); //change the first 4 bits to a tone
+        bitToTone(bit2, tone2); //change the last 4 bits to a tone
+        Tone.push_back(tone1); 
+        Tone.push_back(tone2);
     }
 }
+
 
 vector<int> vectorCharToVectorInt(vector<char>& conversionVector) {
     vector<int> integerVector;
@@ -209,7 +210,7 @@ int main(void){
 
 //Vector of integers (startflag:159D and endflag:2*BD2C)
     vector<int> vectorStartFlag = {0,5,10,15};
-    vector<int> vectorEndFlag = {1,12,7,15,1,11};
+    vector<int> vectorEndFlag = {1,12,7,15}; //1,12,7,15,1,11
 
 //Starting stream
     err = Pa_StartStream(stream);
@@ -217,7 +218,7 @@ int main(void){
 
     std::cout << "\nPlaying now:" << std::endl;   
 
-    int tidAfspillet = (21*5); // buffertid er 21
+    int tidAfspillet = (21*7); // buffertid er 21
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
@@ -233,7 +234,7 @@ int main(void){
     }
 
 
-//Afspiller endflag: 2 * B D 2 C
+//Afspiller endflag: 2 * B D (2 C)
     for (int i = 0; i < vectorEndFlag.size(); i++){
         data.dtmfValg = vectorEndFlag[i];
         std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet));
