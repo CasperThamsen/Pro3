@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void asciitobit(char input, bitset<8> &x){
+void asciiToBit(char input, bitset<8> &x){
     char inputChar = input;
     unsigned char byteValue = static_cast<unsigned char>(inputChar); //change from char to byte in decimal value
     bitset<8> binaryRepresentation(byteValue); // change from byte to 8bit reprensentaion
@@ -13,7 +13,7 @@ void asciitobit(char input, bitset<8> &x){
 }
 
 
-void bittotone(string input, char &tone){
+void bitToTone(string input, char &tone){
     if (input == string("0000")){tone = '1';}
     if (input == string("0001")){tone = '2';}
     if (input == string("0010")){tone = '3';}
@@ -33,7 +33,7 @@ void bittotone(string input, char &tone){
 }
 
 
-void stringtotone(string import, vector<char> &Tone){
+void stringToTone(string import, vector<char> &Tone){
     for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
         char input = import[i]; //Takes every char from the string
@@ -57,7 +57,7 @@ void stringtotone(string import, vector<char> &Tone){
 }
 
 
-void tonetobit(vector<char> &Tones, vector<string> &BitSets){
+void toneToBit(vector<char> &Tones, vector<string> &BitSets){
     string Placeholder;
     for (int i = 0; i < Tones.size(); i++){
         if(Tones[i]== '1'){Placeholder = ("0000");}
@@ -81,7 +81,7 @@ void tonetobit(vector<char> &Tones, vector<string> &BitSets){
 }
 
 
-void bittobyte(vector<string> &BitsetstoByte){
+void bitToByte(vector<string> &BitsetstoByte){
     vector<string> tempvec;
     for (int i = 0; i < BitsetstoByte.size(); i+=2){ //takes every bitset and combines them to a byte
         string string1 = BitsetstoByte[i]+BitsetstoByte[i+1];
@@ -90,7 +90,7 @@ void bittobyte(vector<string> &BitsetstoByte){
     BitsetstoByte=tempvec;
 }
 
-void bytetoascii(string &asciistring,vector<string> &byte){
+void byteToAscii(string &asciistring,vector<string> &byte){
     string Placeholder;
     for (int i = 0; i < byte.size(); i++){
         int asciival=bitset<8>(byte[i]).to_ulong(); //takes the byte and converts it into a ascii char
@@ -100,7 +100,7 @@ void bytetoascii(string &asciistring,vector<string> &byte){
 }
 
 
-void tonetoascii(vector<char> &input,string &output){
+void toneToAscii(vector<char> &input,string &output){
 vector<string> placeholder;
 tonetobit(input,placeholder);
 bittobyte(placeholder);
@@ -108,7 +108,7 @@ bytetoascii(output,placeholder);
 }
 
 
-void checkfordupes(vector<char> &Tonerepresentation){
+void checkForDupes(vector<char> &Tonerepresentation){
     for (int i = 0; i < Tonerepresentation.size(); i++){
         vector<char> flag;
         flag.push_back('7');
@@ -124,7 +124,7 @@ void checkfordupes(vector<char> &Tonerepresentation){
 }
 
 
-void removecheckfordupes(vector<char> &Tonerepresentaion){
+void removeCheckForDupes(vector<char> &Tonerepresentaion){
     for (int i = 0; i < Tonerepresentaion.size(); i++){
         if(Tonerepresentaion[i]=='7'&& Tonerepresentaion[i+1]=='2')
         Tonerepresentaion.erase(Tonerepresentaion.begin()+i,Tonerepresentaion.begin()+i+2);
@@ -132,7 +132,7 @@ void removecheckfordupes(vector<char> &Tonerepresentaion){
 }
 
 
-void insertflags(vector<char> &Tonerepresentaion){
+void insertFlags(vector<char> &Tonerepresentaion){
     std::vector<char> flag;
     flag.push_back('3');
     flag.push_back('A');
@@ -147,7 +147,7 @@ void insertflags(vector<char> &Tonerepresentaion){
 }
 
 
-void checkcommand(vector<char> &inputTones, string &Kommandooutput){
+void checkCommand(vector<char> &inputTones, string &Kommandooutput){
     vector<char> test;
     if (inputTones.size()>=6){
         for (int i = 0; i < 6; i++){
