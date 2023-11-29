@@ -37,7 +37,7 @@ void stringToTone(string import, vector<char> &Tone){
     for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
         char input = import[i]; //Takes every char from the string
-        asciitobit(input, BitSet); //Turns it into a 8bit reprenstation
+        asciiToBit(input, BitSet); //Turns it into a 8bit reprenstation
         string test = BitSet.to_string(); //changes it from Bitset to a string
         string bit1;
         string bit2;
@@ -49,8 +49,8 @@ void stringToTone(string import, vector<char> &Tone){
         for (int k = 4; k < 8; k++) //Takes the last 4 bits{
             bit2 += test[k];
         }
-        bittotone(bit1, tone1); //change the first 4 bits to a tone
-        bittotone(bit2, tone2); //change the last 4 bits to a tone
+        bitToTone(bit1, tone1); //change the first 4 bits to a tone
+        bitToTone(bit2, tone2); //change the last 4 bits to a tone
         Tone.push_back(tone1); 
         Tone.push_back(tone2);
     }
@@ -90,21 +90,21 @@ void bitToByte(vector<string> &BitsetstoByte){
     BitsetstoByte=tempvec;
 }
 
-void byteToAscii(string &asciistring,vector<string> &byte){
+void byteToAscii(string &asciiString,vector<string> &byte){
     string Placeholder;
     for (int i = 0; i < byte.size(); i++){
-        int asciival=bitset<8>(byte[i]).to_ulong(); //takes the byte and converts it into a ascii char
-        Placeholder.push_back(static_cast<char>(asciival));
+        int asciiVal=bitset<8>(byte[i]).to_ulong(); //takes the byte and converts it into a ascii char
+        Placeholder.push_back(static_cast<char>(asciiVal));
     }
-    asciistring=Placeholder;
+    asciiString=Placeholder;
 }
 
 
 void toneToAscii(vector<char> &input,string &output){
 vector<string> placeholder;
-tonetobit(input,placeholder);
-bittobyte(placeholder);
-bytetoascii(output,placeholder);
+toneToBit(input,placeholder);
+bitToByte(placeholder);
+byteToAscii(output,placeholder);
 }
 
 
@@ -157,7 +157,7 @@ void checkCommand(vector<char> &inputTones, string &Kommandooutput){
     }else{
         cout<<"Failure"<<endl;
     }
-    tonetoascii(test,Kommandooutput);
+    toneToAscii(test,Kommandooutput);
 }
 
 
@@ -167,10 +167,10 @@ int main(){
     string Kommandotest;
     string import = "2$2 $2$ 2$2 $2$";
     string output;
-    stringtotone(import,BitSekvens);
+    stringToTone(import,BitSekvens);
     checkcommand(BitSekvens,Kommandotest);
     cout<<Kommandotest<<endl;
-    tonetoascii(BitSekvens,output);
+    toneToAscii(BitSekvens,output);
     cout<<output<<endl;
     return 0;
 }
