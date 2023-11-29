@@ -5,6 +5,8 @@
 using namespace std;
 vector<char> BitSekvens;
 string output ("0");
+vector<char> Kommando;
+string Kommandotest;
 void asciitobit(char input, bitset<8> &x)
 {
     // Input character
@@ -200,12 +202,12 @@ string asciisttring;
     }
 x=asciisttring;
 }
-void tonetoascii(vector<char> &x)
+void tonetoascii(vector<char> &x,string &y)
 {
 vector<string> placeholder(x.size());
 tonetobit(x,placeholder);
 bittobyte(placeholder);
-bytetoascii(output,placeholder);
+bytetoascii(y,placeholder);
 
 }
 void checkfordupes(vector<char> &x)
@@ -255,10 +257,18 @@ void insertflags(vector<char> &x)
 
     }
 }
-void removeflags(vector<char> &x)
+void checkcommand(vector<char> &x, string &y)
 {
-    
+vector<char> test;
+for (int i = 0; i < 12; i++)
+{
+    test.push_back(x[i]);
 }
+tonetoascii(test,y);
+
+}
+
+
 int main()
 {
     string import = "2$";
@@ -274,7 +284,10 @@ int main()
     {
        cout<<BitSekvens[i]<<endl;
     }
-    //tonetoascii(BitSekvens);
+    //tonetoascii(BitSekvens,output);
     //cout<<output<<endl;
+    checkcommand(BitSekvens,Kommandotest);
+    cout<<Kommandotest<<endl;
+
     return 0;
 }
