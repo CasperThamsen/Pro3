@@ -83,7 +83,7 @@ void bittotone(string input, char &tone)
         tone = 'D';
     }
 }
-void stringtotone(string import)
+void stringtotone(string import, vector<char> &x)
 {
     for (int i = 0; i < import.length(); i++)
     {
@@ -105,8 +105,8 @@ void stringtotone(string import)
         }
         bittotone(bit1, tone1);
         bittotone(bit2, tone2);
-        BitSekvens.push_back(tone1);
-        BitSekvens.push_back(tone2);
+        x.push_back(tone1);
+        x.push_back(tone2);
     }
 }
 void tonetobit(vector<char> &x, vector<string> &y)
