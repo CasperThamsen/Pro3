@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 using namespace std;
+
+
 void asciitobit(char input, bitset<8> &x){
     char inputChar = input;
     unsigned char byteValue = static_cast<unsigned char>(inputChar); //change from char to byte in decimal value
