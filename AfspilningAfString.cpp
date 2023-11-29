@@ -187,18 +187,19 @@ int main(void){
 
 
 
-//Input a string to be transmitted.
-    std::string inputStringForTransmission;
-    std::cout << "\nEnter string for transmission: " << std::endl;
-    std::cin >> inputStringForTransmission;
-    std::cout << std::endl;
+//String to be transmitted.
+    string inputStringForTransmission = "Hello world";
+    // string inputStringForTransmission = "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
 
 
 //Convert from string to a vector of ASCII chars.
     vector<char> vectorOfAsciiChars;    
     stringToTone(inputStringForTransmission, vectorOfAsciiChars);
     cout << "ASCII Chars:   "; //Testing
-    for (int i = 0; i < vectorOfAsciiChars.size(); i++){cout<<vectorOfAsciiChars[i]<<" ";} //Print the ASCII chars for testing/control.
+    for (int i = 0; i < vectorOfAsciiChars.size(); i++){
+        cout<<vectorOfAsciiChars[i]<<",";
+        if(0 == ((i+1)%2)){cout << " ";}
+    } //Print the ASCII chars for testing/control.
     std::cout << std::endl;
 
 
@@ -207,10 +208,11 @@ int main(void){
     cout << "Integer value: "; //Testing
     for (int i : vectorIntToBePlayed){std::cout << i << " ";}
     std::cout << std::endl;
+    cout << "Size of vector: " << vectorIntToBePlayed.size() << endl;
 
-//Vector of integers (startflag:159D and endflag:2*BD2C)
+//Vector of integers (startflag:159D and endflag:2*BD)
     vector<int> vectorStartFlag = {0,5,10,15};
-    vector<int> vectorEndFlag = {1,12,7,15}; //1,12,7,15,1,11
+    vector<int> vectorEndFlag = {1,12,7,15};
 
 //Starting stream
     err = Pa_StartStream(stream);
@@ -234,7 +236,7 @@ int main(void){
     }
 
 
-//Afspiller endflag: 2 * B D (2 C)
+//Afspiller endflag: 2 * B D
     for (int i = 0; i < vectorEndFlag.size(); i++){
         data.dtmfValg = vectorEndFlag[i];
         std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet));
