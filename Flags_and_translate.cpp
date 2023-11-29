@@ -170,40 +170,36 @@ void bittobyte(vector<string> &y){
 
 
 void bytetoascii(string &x,vector<string> &y){
-string asciisttring;
-    for (int i = 0; i < y.size(); i++)
-    {
+    string asciisttring;
+    for (int i = 0; i < y.size(); i++){
         int asciival=bitset<8>(y[i]).to_ulong();
         asciisttring.push_back(static_cast<char>(asciival));
     }
-x=asciisttring;
-}
-void tonetoascii(vector<char> &x,string &y)
-{
-vector<string> placeholder;
-tonetobit(x,placeholder);
-bittobyte(placeholder);
-bytetoascii(y,placeholder);
-}
-void checkfordupes(vector<char> &x)
-{
-for (int i = 0; i < x.size(); i++)
-{
-    vector<char> flag;
-    flag.push_back('7');
-    flag.push_back('2');
-    if (x[i]==x[i+1]){
-    x.insert(x.begin()+i+1,flag.begin(),flag.end());
-    i=i+2;
-    }
-    if (x[i]=='7' && x[i+1]=='2'){
-        x.insert(x.begin()+i,flag.begin(),flag.end());
-    }
-
-    
-    
+    x=asciisttring;
 }
 
+
+void tonetoascii(vector<char> &x,string &y){
+    vector<string> placeholder;
+    tonetobit(x,placeholder);
+    bittobyte(placeholder);
+    bytetoascii(y,placeholder);
+}
+
+
+void checkfordupes(vector<char> &x){
+    for (int i = 0; i < x.size(); i++){
+        vector<char> flag;
+        flag.push_back('7');
+        flag.push_back('2');
+        if (x[i]==x[i+1]){
+            x.insert(x.begin()+i+1,flag.begin(),flag.end());
+            i=i+2;
+        }
+        if (x[i]=='7' && x[i+1]=='2'){
+            x.insert(x.begin()+i,flag.begin(),flag.end());
+        }    
+    }
 }
 
 
