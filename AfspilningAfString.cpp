@@ -17,7 +17,7 @@ using namespace std;
 
 typedef struct{
     float dtmf[16][TABLE_SIZE];  //16
-    unsigned int dmtfValg;
+    unsigned int dtmfValg;
     unsigned int phase;
 } paData;
 
@@ -44,7 +44,7 @@ static int audioCallback(const void* inputBuffer, void* outputBuffer,
     static unsigned long i;
     for (i = 0; i < framesPerBuffer; i++){
 
-        *out++ = data->dtmf[data->dmtfValg][data->phase];
+        *out++ = data->dtmf[data->dtmfValg][data->phase];
 
         data->phase +=  1;
         if( data->phase >= TABLE_SIZE ) data->phase -= TABLE_SIZE; //fjerner skrætten
@@ -55,7 +55,7 @@ static int audioCallback(const void* inputBuffer, void* outputBuffer,
 
 
 
-void asciitobit(char inputChar, bitset<8> &x){
+void asciiToBit(char inputChar, bitset<8> &x){
     unsigned char byteValue = static_cast<unsigned char>(inputChar);
     // Display the result as an 8-bit binary string
     bitset<8> binaryRepresentation(byteValue);
@@ -63,7 +63,7 @@ void asciitobit(char inputChar, bitset<8> &x){
 }
 
 
-void bittotone(string input, char &tone){
+void bitToTone(string input, char &tone){
     if (input == string("0000")){tone = '1';}
     if (input == string("0001")){tone = '2';}
     if (input == string("0010")){tone = '3';}
@@ -83,11 +83,11 @@ void bittotone(string input, char &tone){
 }
 
 
-void stringtotone(string import, vector<char> &BitSekvens){
+void stringToTone(string import, vector<char> &vectorOfAsciiChars){
     for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
         char input = import[i];
-        asciitobit(input, BitSet);
+        asciiToBit(input, BitSet);
         string test = BitSet.to_string();
         string bit1;
         string bit2;
@@ -99,10 +99,10 @@ void stringtotone(string import, vector<char> &BitSekvens){
         }
         char tone1;
         char tone2;
-        bittotone(bit1, tone1);
-        bittotone(bit2, tone2);
-        BitSekvens.push_back(tone1);
-        BitSekvens.push_back(tone2);
+        bitToTone(bit1, tone1);
+        bitToTone(bit2, tone2);
+        vectorOfAsciiChars.push_back(tone1);
+        vectorOfAsciiChars.push_back(tone2);
     }
 }
 
@@ -187,58 +187,60 @@ int main(void){
 
 
 //Input a string to be transmitted.
-    std::string stringToBePlayed;
+    std::string inputStringForTransmission;
     std::cout << "\nEnter string for transmission: " << std::endl;
-    std::cin >> stringToBePlayed;
+    std::cin >> inputStringForTransmission;
     std::cout << std::endl;
 
 
 //Convert from string to a vector of ASCII chars.
-    vector<char> asciiChars;    
-    stringtotone(stringToBePlayed, asciiChars);
-    cout << "ASCII Chars:   ";
-    for (int i = 0; i < asciiChars.size(); i++){cout<<asciiChars[i]<<" ";} //Print the ASCII chars for testing/control.
+    vector<char> vectorOfAsciiChars;    
+    stringToTone(inputStringForTransmission, vectorOfAsciiChars);
+    cout << "ASCII Chars:   "; //Testing
+    for (int i = 0; i < vectorOfAsciiChars.size(); i++){cout<<vectorOfAsciiChars[i]<<" ";} //Print the ASCII chars for testing/control.
     std::cout << std::endl;
 
 
 //Convert fron vector of ASCII chars to vector of intergers.
-    vector<int> vectorIntToBePlayed = vectorCharToVectorInt(asciiChars);
-    cout << "Integer value: ";
+    vector<int> vectorIntToBePlayed = vectorCharToVectorInt(vectorOfAsciiChars);
+    cout << "Integer value: "; //Testing
     for (int i : vectorIntToBePlayed){std::cout << i << " ";}
     std::cout << std::endl;
 
+//Vector of integers (startflag:159D and endflag:2*BD2C)
+    vector<int> vectorStartFlag = {0,5,10,15};
+    vector<int> vectorEndFlag = {1,12,7,15,1,11};
 
-
+//Starting stream
     err = Pa_StartStream(stream);
     checkErr(err);
 
     std::cout << "\nPlaying now:" << std::endl;   
 
-    int tidAfspillet = (21*3); // buffertid er 21
+    int tidAfspillet = (21*5); // buffertid er 21
 
-    // Start sekvens:
-    // 1 5 9 D
-    data.dmtfValg = 0;
-    std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 1 i lang tid.
-    
-    data.dmtfValg = 5;
-    std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 2
-
-    data.dmtfValg = 10;
-    std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 3
-
-    data.dmtfValg = 15;
-    std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 3
-
-    for(int i = 0; i < vectorIntToBePlayed.size(); i++){ //Looper igennem de indtastede chars's toner.
-        data.dmtfValg = vectorIntToBePlayed[i];
-        std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 1 i lang tid.
+//Afspiller startflag: 1 5 9 D
+    for(int i = 0; i < vectorStartFlag.size(); i++){
+        data.dtmfValg = vectorStartFlag[i];
+        std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet));
     }
 
-    // endflag lige pt
-    data.dmtfValg = 15;
-    std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet)); // spiller tone 2
 
+//Afspiller selve sekvensen
+    for(int i = 0; i < vectorIntToBePlayed.size(); i++){ //Looper igennem de indtastede chars's toner.
+        data.dtmfValg = vectorIntToBePlayed[i];
+        std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet));
+    }
+
+
+//Afspiller endflag: 2 * B D 2 C
+    for (int i = 0; i < vectorEndFlag.size(); i++){
+        data.dtmfValg = vectorEndFlag[i];
+        std::this_thread::sleep_for(std::chrono::milliseconds(tidAfspillet));
+    }
+    
+
+//Stoping stream
     err = Pa_StopStream(stream);
     checkErr(err);
 
