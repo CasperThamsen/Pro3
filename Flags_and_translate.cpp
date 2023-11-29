@@ -3,15 +3,15 @@
 #include <string>
 #include <vector>
 using namespace std;
-void asciitobit(char input, bitset<8> &x)
-{
+void asciitobit(char input, bitset<8> &x){
     char inputChar = input;
     unsigned char byteValue = static_cast<unsigned char>(inputChar); //change from char to byte in decimal value
     bitset<8> binaryRepresentation(byteValue); // change from byte to 8bit reprensentaion
     x = binaryRepresentation;
 }
-void bittotone(string input, char &tone)
-{
+
+
+void bittotone(string input, char &tone){
     if (input == string("0000")){tone = '1';}
     if (input == string("0001")){tone = '2';}
     if (input == string("0010")){tone = '3';}
@@ -29,10 +29,10 @@ void bittotone(string input, char &tone)
     if (input == string("1110")){tone = '#';}
     if (input == string("1111")){tone = 'D';}
 }
-void stringtotone(string import, vector<char> &Tone)
-{
-    for (int i = 0; i < import.length(); i++)
-    {
+
+
+void stringtotone(string import, vector<char> &Tone){
+    for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
         char input = import[i]; //Takes every char from the string
         asciitobit(input, BitSet); //Turns it into a 8bit reprenstation
@@ -41,12 +41,10 @@ void stringtotone(string import, vector<char> &Tone)
         string bit2;
         char tone1;
         char tone2;
-        for (int j = 0; j < 4; j++) //Takes the first 4 bits
-        {
+        for (int j = 0; j < 4; j++) //Takes the first 4 bits{
             bit1 += test[j];
         }
-        for (int k = 4; k < 8; k++) //Takes the last 4 bits
-        {
+        for (int k = 4; k < 8; k++) //Takes the last 4 bits{
             bit2 += test[k];
         }
         bittotone(bit1, tone1); //change the first 4 bits to a tone
@@ -55,11 +53,11 @@ void stringtotone(string import, vector<char> &Tone)
         Tone.push_back(tone2);
     }
 }
-void tonetobit(vector<char> &Tones, vector<string> &BitSets)
-{
-string Placeholder;
-    for (int i = 0; i < Tones.size(); i++)
-    {
+
+
+void tonetobit(vector<char> &Tones, vector<string> &BitSets){
+    string Placeholder;
+    for (int i = 0; i < Tones.size(); i++){
         if(Tones[i]== '1'){Placeholder = ("0000");}
         if(Tones[i]== '2'){Placeholder = ("0001");}
         if(Tones[i]== '3'){Placeholder = ("0010");}
@@ -79,62 +77,60 @@ string Placeholder;
         BitSets.push_back(Placeholder);
     }    
 }
-void bittobyte(vector<string> &BitsetstoByte)
-{
+
+
+void bittobyte(vector<string> &BitsetstoByte){
     vector<string> tempvec;
-    for (int i = 0; i < BitsetstoByte.size(); i+=2) //takes every bitset and combines them to a byte
-    {
+    for (int i = 0; i < BitsetstoByte.size(); i+=2){ //takes every bitset and combines them to a byte
         string string1 = BitsetstoByte[i]+BitsetstoByte[i+1];
         tempvec.push_back(string1);
     }
     BitsetstoByte=tempvec;
 }
-void bytetoascii(string &asciistring,vector<string> &byte)
-{
-string Placeholder;
-    for (int i = 0; i < byte.size(); i++)
-    {
+
+void bytetoascii(string &asciistring,vector<string> &byte){
+    string Placeholder;
+    for (int i = 0; i < byte.size(); i++){
         int asciival=bitset<8>(byte[i]).to_ulong(); //takes the byte and converts it into a ascii char
         Placeholder.push_back(static_cast<char>(asciival));
     }
-asciistring=Placeholder;
+    asciistring=Placeholder;
 }
-void tonetoascii(vector<char> &input,string &output)
-{
+
+
+void tonetoascii(vector<char> &input,string &output){
 vector<string> placeholder;
 tonetobit(input,placeholder);
 bittobyte(placeholder);
 bytetoascii(output,placeholder);
 }
-void checkfordupes(vector<char> &Tonerepresentation)
-{
-for (int i = 0; i < Tonerepresentation.size(); i++)
-{
-    vector<char> flag;
-    flag.push_back('7');
-    flag.push_back('2');
-    if (Tonerepresentation[i]==Tonerepresentation[i+1])
-    {
-    Tonerepresentation.insert(Tonerepresentation.begin()+i+1,flag.begin(),flag.end());
-    i=i+2;
-    }
-    if (Tonerepresentation[i]=='7' && Tonerepresentation[i+1]=='2')
-    {
-        Tonerepresentation.insert(Tonerepresentation.begin()+i,flag.begin(),flag.end());
+
+
+void checkfordupes(vector<char> &Tonerepresentation){
+    for (int i = 0; i < Tonerepresentation.size(); i++){
+        vector<char> flag;
+        flag.push_back('7');
+        flag.push_back('2');
+        if (Tonerepresentation[i]==Tonerepresentation[i+1]){
+            Tonerepresentation.insert(Tonerepresentation.begin()+i+1,flag.begin(),flag.end());
+            i=i+2;
+        }
+        if (Tonerepresentation[i]=='7' && Tonerepresentation[i+1]=='2'){
+            Tonerepresentation.insert(Tonerepresentation.begin()+i,flag.begin(),flag.end());
+        }
     }
 }
-}
-void removecheckfordupes(vector<char> &Tonerepresentaion)
-{
-    for (int i = 0; i < Tonerepresentaion.size(); i++)
-    {
+
+
+void removecheckfordupes(vector<char> &Tonerepresentaion){
+    for (int i = 0; i < Tonerepresentaion.size(); i++){
         if(Tonerepresentaion[i]=='7'&& Tonerepresentaion[i+1]=='2')
         Tonerepresentaion.erase(Tonerepresentaion.begin()+i,Tonerepresentaion.begin()+i+2);
-    }
-    
+    } 
 }
-void insertflags(vector<char> &Tonerepresentaion)
-{
+
+
+void insertflags(vector<char> &Tonerepresentaion){
     std::vector<char> flag;
     flag.push_back('3');
     flag.push_back('A');
@@ -142,33 +138,29 @@ void insertflags(vector<char> &Tonerepresentaion)
     endflag.push_back('3');
     endflag.push_back('4');
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++){
         Tonerepresentaion.insert(Tonerepresentaion.begin(), flag.begin(), flag.end());
         Tonerepresentaion.insert(Tonerepresentaion.end(), endflag.begin(), endflag.end());
-
     }
 }
-void checkcommand(vector<char> &inputTones, string &Kommandooutput)
-{
-vector<char> test;
-if (inputTones.size()>=6)
-{
-    for (int i = 0; i < 6; i++)
-    {
-        test.push_back(inputTones[i]);
-    }
+
+
+void checkcommand(vector<char> &inputTones, string &Kommandooutput){
+    vector<char> test;
+    if (inputTones.size()>=6){
+        for (int i = 0; i < 6; i++){
+            test.push_back(inputTones[i]);
+        }
     
-}
-else
-{
-    cout<<"Failure"<<endl;
-}
-tonetoascii(test,Kommandooutput);
+    }else{
+        cout<<"Failure"<<endl;
+    }
+    tonetoascii(test,Kommandooutput);
 }
 
-int main()
-{
+
+
+int main(){
     vector<char> BitSekvens;
     string Kommandotest;
     string import = "2$2 $2$ 2$2 $2$";
