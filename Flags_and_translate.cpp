@@ -13,26 +13,16 @@ void asciitobit(char input, bitset<8> &x){
     x = binaryRepresentation;
 }
 
-void bittotone(string input, char &tone)
-{
+void bittotone(string input, char &tone){
     if (input == string("0000")){tone = '1';}
     if (input == string("0001")){tone = '2';}
     if (input == string("0010")){tone = '3';}
     if (input == string("0011")){tone = 'A';}
     if (input == string("0100")){tone = '4';}
     if (input == string("0101")){tone = '5';}
-    if (input == string("0110"))
-    {
-        tone = '6';
-    }
-    if (input == string("0111"))
-    {
-        tone = 'B';
-    }
-    if (input == string("1000"))
-    {
-        tone = '7';
-    }
+    if (input == string("0110")){tone = '6';}
+    if (input == string("0111")){tone = 'B';}
+    if (input == string("1000")){tone = '7';}
     if (input == string("1001"))
     {
         tone = '8';
@@ -57,11 +47,13 @@ void bittotone(string input, char &tone)
     {
         tone = '#';
     }
-    if (input == string("1111"))
-    {
+    if (input == string("1111")){
         tone = 'D';
     }
 }
+
+
+
 void stringtotone(string import, vector<char> &x){
     for (int i = 0; i < import.length(); i++){
         bitset<8> BitSet;
@@ -87,73 +79,73 @@ void stringtotone(string import, vector<char> &x){
 
 
 void tonetobit(vector<char> &x, vector<string> &y){
-string string1;
-    for (int i = 0; i < x.size(); i++){
-        if(x[i]== '1')
-        {
-        string1 = ("0000");
-        }
-        if(x[i]== '2')
-        {
-        string1 = ("0001");
-        }
-        if(x[i]== '3')
-        {
-        string1 = ("0010");
-        }
-        if(x[i]== 'A')
-        {
-        string1 = ("0011");
-        }
-        if(x[i]== '4')
-        {
-        string1 = ("0100");
-        }
-        if(x[i]== '5')
-        {
-        string1 = ("0101");
-        }
-        if(x[i]== '6')
-        {
-        string1 = ("0110");
-        }
-        if(x[i]== 'B')
-        {
-        string1 = ("0111");
-        }
-        if(x[i]== '7')
-        {
-        string1 = ("1000");
-        }
-        if(x[i]== '8')
-        {
-        string1 = ("1001");
-        }
-        if(x[i]== '9')
-        {
-        string1 = ("1010");
-        }
-        if(x[i]== 'C')
-        {
-        string1 = ("1011");
-        }
-        if(x[i]== '*')
-        {
-        string1 = ("1100");
-        }
-        if(x[i]== '0')
-        {
-        string1 = ("1101");
-        }
-        if(x[i]== '#')
-        {
-        string1 = ("1110");
-        }
-        if(x[i]== 'D')
-        {
-        string1 = ("1111");
-        }
-        y.push_back(string1);
+    string string1;
+        for (int i = 0; i < x.size(); i++){
+            if(x[i]== '1')
+            {
+            string1 = ("0000");
+            }
+            if(x[i]== '2')
+            {
+            string1 = ("0001");
+            }
+            if(x[i]== '3')
+            {
+            string1 = ("0010");
+            }
+            if(x[i]== 'A')
+            {
+            string1 = ("0011");
+            }
+            if(x[i]== '4')
+            {
+            string1 = ("0100");
+            }
+            if(x[i]== '5')
+            {
+            string1 = ("0101");
+            }
+            if(x[i]== '6')
+            {
+            string1 = ("0110");
+            }
+            if(x[i]== 'B')
+            {
+            string1 = ("0111");
+            }
+            if(x[i]== '7')
+            {
+            string1 = ("1000");
+            }
+            if(x[i]== '8')
+            {
+            string1 = ("1001");
+            }
+            if(x[i]== '9')
+            {
+            string1 = ("1010");
+            }
+            if(x[i]== 'C')
+            {
+            string1 = ("1011");
+            }
+            if(x[i]== '*')
+            {
+            string1 = ("1100");
+            }
+            if(x[i]== '0')
+            {
+            string1 = ("1101");
+            }
+            if(x[i]== '#')
+            {
+            string1 = ("1110");
+            }
+            if(x[i]== 'D')
+            {
+            string1 = ("1111");
+            }
+            y.push_back(string1);
     }    
 }
 
@@ -210,6 +202,7 @@ void removecheckfordupes(vector<char> &x){
     }    
 }
 
+
 void insertflags(vector<char> &x){
     std::vector<char> flag;
     flag.push_back('3');
@@ -246,7 +239,6 @@ int main(){
     for (int i = 0; i < BitSekvens.size(); i++){
         cout<<BitSekvens[i]<<endl;
     }
-    
     checkcommand(BitSekvens,Kommandotest);
     cout<<Kommandotest<<endl;
     return 0;
