@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 using namespace std;
-void asciitobit(char input, bitset<8> &x)
-{
+
+void asciitobit(char input, bitset<8> &x){
     // Input character
     char inputChar = input;
     unsigned char byteValue = static_cast<unsigned char>(inputChar);
@@ -12,32 +12,15 @@ void asciitobit(char input, bitset<8> &x)
     bitset<8> binaryRepresentation(byteValue);
     x = binaryRepresentation;
 }
+
 void bittotone(string input, char &tone)
 {
-    if (input == string("0000"))
-    {
-        tone = '1';
-    }
-    if (input == string("0001"))
-    {
-        tone = '2';
-    }
-    if (input == string("0010"))
-    {
-        tone = '3';
-    }
-    if (input == string("0011"))
-    {
-        tone = 'A';
-    }
-    if (input == string("0100"))
-    {
-        tone = '4';
-    }
-    if (input == string("0101"))
-    {
-        tone = '5';
-    }
+    if (input == string("0000")){tone = '1';}
+    if (input == string("0001")){tone = '2';}
+    if (input == string("0010")){tone = '3';}
+    if (input == string("0011")){tone = 'A';}
+    if (input == string("0100")){tone = '4';}
+    if (input == string("0101")){tone = '5';}
     if (input == string("0110"))
     {
         tone = '6';
