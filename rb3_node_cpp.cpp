@@ -636,7 +636,7 @@ int main(int argc, char ** argv){
 
     std::cout << "\nPlaying now:" << std::endl;
 
-    int tidAfspillet = (buffertid*6); // buffertid er 40
+    int tidAfspillet = (21*6); // buffertid er 40
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
