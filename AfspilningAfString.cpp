@@ -12,7 +12,6 @@
 using namespace std;
 
 #define SAMPLE_RATE (8000)
-#define NUM_SECONDS (2)
 #define TABLE_SIZE (8000)
 
 typedef struct{
@@ -80,7 +79,6 @@ void bitToTone(string input, char &tone){
     if (input == string("1110")){tone = '#';}
     if (input == string("1111")){tone = 'D';}
 }
-
 
 
 void stringToTone(string import, vector<char> &Tone){
@@ -188,8 +186,9 @@ int main(void){
 
 
 //String to be transmitted.
+    string addresseString = "001";
     string inputStringForTransmission = "Hello world";
-    // string inputStringForTransmission = "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
+    inputStringForTransmission.insert(0,addresseString);
     cout << "\nTransmitted string: " << inputStringForTransmission << endl;
 
 //Convert from string to a vector of ASCII chars.
@@ -202,7 +201,6 @@ int main(void){
     } //Print the ASCII chars for testing/control.
     std::cout << std::endl;
 
-
 //Convert fron vector of ASCII chars to vector of intergers.
     vector<int> vectorIntToBePlayed = vectorCharToVectorInt(vectorOfAsciiChars);
     cout << "Integer value:      "; //Testing
@@ -211,16 +209,16 @@ int main(void){
     cout << "Size of vector:     " << vectorIntToBePlayed.size() << endl;
 
 //Vector of integers (startflag:159D and endflag:2*BD)
-    vector<int> vectorStartFlag = {0,5,10,15};
+    vector<int> vectorStartFlag = {0,5,10,15}; //0 5 10 15
     vector<int> vectorEndFlag = {1,12,7,15};
 
 //Starting stream
     err = Pa_StartStream(stream);
     checkErr(err);
 
-    std::cout << "\nPlaying now:" << std::endl;   
+    std::cout << "\nPlaying now..." << std::endl;   
 
-    int tidAfspillet = (21*7); // buffertid er 21
+    int tidAfspillet = (40*6);
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
@@ -256,4 +254,3 @@ int main(void){
 
     return 0;
 }
-
