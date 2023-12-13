@@ -284,24 +284,25 @@ void recognizeTone(double upperFreq, double lowerFreq, char& toneCharfound) {
 
 void computingFFT(char& toneCharfound) {
     fftw_execute(Data->plan); //gør fft'en. Nu er out fyldt med data som er transformet af fft'en
-
-    int firBigMag = -1;
-    int secBigMag = -1;
+    
+    int firBigIndex = -1;
+    int secBigIndex = -1;
 
     for (int i = 0; i < FRAMES_PER_BUFFER_RECORD; i++) { //Kun igennem halvdelen (/2)
-        if (Data->out[i] * Data->out[i] > Data->out[firBigMag] * Data->out[firBigMag]) { //magnitude, hvor kvadratroden er "sparet" væk
+        if (Data->out[i] * Data->out[i] > Data->out[firBigIndex] * Data->out[firBigIndex]) { //magnitude, hvor kvadratroden er "sparet" væk
             if (((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) > 1100) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) < 1700)) {
-                firBigMag = i;
+                firBigIndex = i;
             }
         }
-        if (Data->out[i] * Data->out[i] > Data->out[secBigMag] * Data->out[secBigMag]) { //magnitude, hvor kvadratroden er "sparet" væk
+        if (Data->out[i] * Data->out[i] > Data->out[secBigIndex] * Data->out[secBigIndex]) { //magnitude, hvor kvadratroden er "sparet" væk
             if (((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) > 600) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) < 1000)) {
-                secBigMag = i;
+                secBigIndex = i;
             }
         }
     }
-    double bigFoundFreq = (double)firBigMag * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2; //Vi dividere med 2 pga. spejlning af resultatet.
-    double smallFoundFreq = (double)secBigMag * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2;
+    
+    double bigFoundFreq = (double)firBigIndex * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2; //Vi dividere med 2 pga. spejlning af resultatet.
+    double smallFoundFreq = (double)secBigIndex * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2;
 
     //Har igen effekt da if-statementsene i forloopet ovenfor allerede har styr på, at de rigtige amplituder.
     if (smallFoundFreq > bigFoundFreq) {
