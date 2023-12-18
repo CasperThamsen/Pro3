@@ -1,0 +1,15 @@
+//////////////////KONTROL////////////////////////////
+    vector<char> sammenligning = {A,D, A,D}; //Kopieres fra afspilnings program
+    vector<int> indexForFejl;
+    for (int i = 0; i < sammenligning.size(); i++){
+        if(everyToneVector[i] != sammenligning[i]){
+            indexForFejl.push_back(i);
+        }
+    }
+    
+    for (int i = 0; i < indexForFejl.size(); i++){
+        cout << "Korrekt:" << sammenligning[i] << endl;
+        cout << "Fejl:   " << everyToneVector[i] << endl;
+        cout << endl; 
+    }
+//////////////////KONTROL////////////////////////////
