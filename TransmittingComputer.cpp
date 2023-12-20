@@ -218,11 +218,7 @@ int main(void){
     err = Pa_StartStream(stream);
     checkErr(err);
 
-    int playingTime = (213);
-
-        data.toneToPlay = 15;
-        this_thread::sleep_for(chrono::milliseconds(100000));
-
+    int playingTime = (240);
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
