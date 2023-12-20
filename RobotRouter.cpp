@@ -245,108 +245,107 @@ void checkForStopFlag(vector<char> CharVector) {
 }
 
 
-void genkendDTMFtoner(double stor, double lille, char& toneCharfound){     
-    double at = 25; //Tilladt afvigelse
-    double atstor = 25; 
+void recognizeTone(double upperFreq, double lowerFreq, char& toneCharfound) {
+    double at = 25;//33 //Tilladt afvigelse
+    double atstor = 25; //63
+    std::vector<double> DTMFfreq{ 1209, 1336, 1477, 1633, 679, 770, 852, 941 };
 
-    std::vector<double> freq{1209, 1336, 1477, 1633, 679, 770, 852, 941};
-
-    if(freq[0]-atstor < stor && freq[0]+atstor > stor){
-        if (freq[4]-at < lille && freq[4]+at > lille){ toneCharfound = '1';}
-        if (freq[5]-at < lille && freq[5]+at > lille){ toneCharfound = '4';}
-        if (freq[6]-at < lille && freq[6]+at > lille){ toneCharfound = '7';}
-        if (freq[7]-at < lille && freq[7]+at > lille){ toneCharfound = '*';}
+    if (DTMFfreq[0] - atstor < upperFreq && DTMFfreq[0] + atstor > upperFreq) {
+        if (DTMFfreq[4] - at < lowerFreq && DTMFfreq[4] + at > lowerFreq) { toneCharfound = '1'; }
+        if (DTMFfreq[5] - at < lowerFreq && DTMFfreq[5] + at > lowerFreq) { toneCharfound = '4'; }
+        if (DTMFfreq[6] - at < lowerFreq && DTMFfreq[6] + at > lowerFreq) { toneCharfound = '7'; }
+        if (DTMFfreq[7] - at < lowerFreq && DTMFfreq[7] + at > lowerFreq) { toneCharfound = '*'; }
     }
-    else if(freq[1]-atstor < stor && freq[1]+atstor > stor){
-        if (freq[4]-at < lille && freq[4]+at > lille){ toneCharfound = '2';}
-        if (freq[5]-at < lille && freq[5]+at > lille){ toneCharfound = '5';}
-        if (freq[6]-at < lille && freq[6]+at > lille){ toneCharfound = '8';}
-        if (freq[7]-at < lille && freq[7]+at > lille){ toneCharfound = '0';}
+    else if (DTMFfreq[1] - atstor < upperFreq && DTMFfreq[1] + atstor > upperFreq) {
+        if (DTMFfreq[4] - at < lowerFreq && DTMFfreq[4] + at > lowerFreq) { toneCharfound = '2'; }
+        if (DTMFfreq[5] - at < lowerFreq && DTMFfreq[5] + at > lowerFreq) { toneCharfound = '5'; }
+        if (DTMFfreq[6] - at < lowerFreq && DTMFfreq[6] + at > lowerFreq) { toneCharfound = '8'; }
+        if (DTMFfreq[7] - at < lowerFreq && DTMFfreq[7] + at > lowerFreq) { toneCharfound = '0'; }
     }
-    else if(freq[2]-atstor < stor && freq[2]+atstor > stor){
-        if (freq[4]-at < lille && freq[4]+at > lille){ toneCharfound = '3';}
-        if (freq[5]-at < lille && freq[5]+at > lille){ toneCharfound = '6';}
-        if (freq[6]-at < lille && freq[6]+at > lille){ toneCharfound = '9';}
-        if (freq[7]-at < lille && freq[7]+at > lille){ toneCharfound = '#';}
+    else if (DTMFfreq[2] - atstor < upperFreq && DTMFfreq[2] + atstor > upperFreq) {
+        if (DTMFfreq[4] - at < lowerFreq && DTMFfreq[4] + at > lowerFreq) { toneCharfound = '3'; }
+        if (DTMFfreq[5] - at < lowerFreq && DTMFfreq[5] + at > lowerFreq) { toneCharfound = '6'; }
+        if (DTMFfreq[6] - at < lowerFreq && DTMFfreq[6] + at > lowerFreq) { toneCharfound = '9'; }
+        if (DTMFfreq[7] - at < lowerFreq && DTMFfreq[7] + at > lowerFreq) { toneCharfound = '#'; }
     }
-    else if(freq[3]-atstor < stor && freq[3]+atstor > stor){
-        if (freq[4]-at < lille && freq[4]+at > lille){ toneCharfound = 'A';}
-        if (freq[5]-at < lille && freq[5]+at > lille){ toneCharfound = 'B';}
-        if (freq[6]-at < lille && freq[6]+at > lille){ toneCharfound = 'C';}
-        if (freq[7]-at < lille && freq[7]+at > lille){ toneCharfound = 'D';}
-    } 
-    else{
+    else if (DTMFfreq[3] - atstor < upperFreq && DTMFfreq[3] + atstor > upperFreq) {
+        if (DTMFfreq[4] - at < lowerFreq && DTMFfreq[4] + at > lowerFreq) { toneCharfound = 'A'; }
+        if (DTMFfreq[5] - at < lowerFreq && DTMFfreq[5] + at > lowerFreq) { toneCharfound = 'B'; }
+        if (DTMFfreq[6] - at < lowerFreq && DTMFfreq[6] + at > lowerFreq) { toneCharfound = 'C'; }
+        if (DTMFfreq[7] - at < lowerFreq && DTMFfreq[7] + at > lowerFreq) { toneCharfound = 'D'; }
+    }
+    else {
         toneCharfound = 'm'; // m for mellemrum i vektoren.
     }
 
     //fjerner et underligt NULL
-    if((int)toneCharfound == 0){
-	cout<<"Null Fundet"<<endl;
+    if ((int)toneCharfound == 0) {
+        cout << "Null Fundet" << endl;
         return;
     }
-
-    std::cout << toneCharfound << std::endl;
 }
 
-void computingFFT(char & toneCharfound){
+void computingFFT(char& toneCharfound) {
     fftw_execute(Data->plan); //gør fft'en. Nu er out fyldt med data som er transformet af fft'en
-    
-    int storsteAmplitude = -1;
-    int andenAmplitude = -1;
 
-    for(int i = 0; i < FRAMES_PER_BUFFER_RECORD; i++){ //Kun igennem halvdelen (/2) pga spejlning i resultatet.
-        if(Data->out[i] * Data->out[i] > Data->out[storsteAmplitude] * Data->out[storsteAmplitude]){ //magnitude, hvor kvadratroden er "sparet" væk
-            if(( (double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2) > 1100) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2) < 1700) ){
-                storsteAmplitude = i;
+    int firBigIndex = -1;
+    int secBigIndex = -1;
+
+    for (int i = 0; i < FRAMES_PER_BUFFER_RECORD/2; i++) { //Kun igennem halvdelen (/2)
+        if (Data->out[i] * Data->out[i] > Data->out[firBigIndex] * Data->out[firBigIndex]) { //magnitude, hvor kvadratroden er "sparet" væk
+            if (((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) > 1100) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) < 1700)) {
+                firBigIndex = i;
             }
         }
-        if(Data->out[i] * Data->out[i] > Data->out[andenAmplitude] * Data->out[andenAmplitude]){ //magnitude, hvor kvadratroden er "sparet" væk
-            if(( (double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2) > 600) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2) < 1000) ){
-                andenAmplitude = i;
+        if (Data->out[i] * Data->out[i] > Data->out[secBigIndex] * Data->out[secBigIndex]) { //magnitude, hvor kvadratroden er "sparet" væk
+            if (((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) > 600) && ((double(i) * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2) < 1000)) {
+                secBigIndex = i;
             }
         }
     }
-    double storsteFrekvens = (double)storsteAmplitude * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2; //Vi dividere med 2 pga. spejlning af resultatet.
-    double andenFrekvens = (double)andenAmplitude * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD/2;
+    double bigFoundFreq = (double)firBigIndex * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2; //Vi dividere med 2 pga. spejlning af resultatet.
+    double smallFoundFreq = (double)secBigIndex * SAMPLE_RATE_RECORD / FRAMES_PER_BUFFER_RECORD / 2;
 
-    genkendDTMFtoner(storsteFrekvens, andenFrekvens, toneCharfound);
+    recognizeTone(bigFoundFreq, smallFoundFreq, toneCharfound);
 }
 
-void FFT(){
-    while((callbackInfo.size() >= (FRAMES_PER_BUFFER_RECORD)) && (!callbackInfo.empty())){
-        
-        for(int i = 0; i <FRAMES_PER_BUFFER_RECORD; i++){
-            Data->in[i]= callbackInfo.front(); //tager index 0.
+void FFT() {
+    while ((callbackInfo.size() >= (FRAMES_PER_BUFFER_RECORD)) && (!callbackInfo.empty())) {
+
+        for (int i = 0; i < FRAMES_PER_BUFFER_RECORD; i++) {
+            Data->in[i] = callbackInfo.front(); //tager index 0.
             callbackInfo.pop(); //sletter idex 0, index 1 bliver ny index 0
         }
-        
+
         computingFFT(toneCharfound);
+        std::cout << toneCharfound << std::endl;
+
         freqVals.push_back(toneCharfound);
 
-        if(TimingBool && toneCharfound != 'm'){
+        if (TimingBool && toneCharfound != 'm') {
             tonesCurrentTime.push_back(toneCharfound);
         }
 
-        if(!TimingBool){
+        if (!TimingBool) {
             checkForStartFlag(freqVals);
         }
-        else{
+        else {
             checkForStopFlag(everyToneVector);
         }
 
         auto CurrentTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(CurrentTime - startTime).count();
-        if(((elapsedTime > (recordingTime*1000)) && TimingBool)){ // *1000 fordi tjek er i mili sekunder.
-
+        if (((elapsedTime > (recordingTime * 1000)) && TimingBool)) { // *1000 fordi tjek er i micro sekunder.
             startTime = std::chrono::high_resolution_clock::now();
             timeCount++;
+            std::cout << "                      siden sidst " << elapsedTime << std::endl;
             std::cout << "                      Ny tid " << timeCount << std::endl;
 
-            if((timeCount > 0) && (tonesCurrentTime.size() > 0)){
+            if ((timeCount > 0) && (tonesCurrentTime.size() > 0)) {
                 everyToneVector.push_back(getMaxOccurringChar(tonesCurrentTime));
                 tonesCurrentTime.clear();
             }
-            else{
+            else {
                 tonesCurrentTime.clear();
             }
         }
