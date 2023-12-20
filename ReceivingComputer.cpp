@@ -28,10 +28,6 @@ typedef struct {
 static paRecordData* Data; //opretter den globalt
 
 vector<char> freqVals;
-//vector fucker lidt med alloceringen 
-//når den/vi ikke kender den endelige størrelse på forhånd
-//så lavede det til en alm global variabel i stedet.
-//Kan godt oprettes i main
 
 queue<double> callbackInfo; //kan tænkes som en vektor buffer der kan fjernes for fra
 bool TimingBool = false; //checker i FFT
