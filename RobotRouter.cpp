@@ -14,7 +14,7 @@
 #include <signal.h>
 
 #define SAMPLE_RATE_RECORD (44100.0)
-#define FRAMES_PER_BUFFER_RECORD (900) //Normalt 1024 eller 512
+#define FRAMES_PER_BUFFER_RECORD (900)
 
 #define SAMPLE_RATE (8000)
 #define TABLE_SIZE (8000)
