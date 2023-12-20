@@ -246,8 +246,8 @@ void checkForStopFlag(vector<char> CharVector) {
 
 
 void recognizeTone(double upperFreq, double lowerFreq, char& toneCharfound) {
-    double at = 25;//33 //Tilladt afvigelse
-    double atstor = 25; //63
+    double at = 25; //Tilladt afvigelse
+    double atstor = 25; 
     std::vector<double> DTMFfreq{ 1209, 1336, 1477, 1633, 679, 770, 852, 941 };
 
     if (DTMFfreq[0] - atstor < upperFreq && DTMFfreq[0] + atstor > upperFreq) {
@@ -610,7 +610,7 @@ int main(int argc, char ** argv){
     err = Pa_StartStream(stream);
     checkErr(err);
 
-    int playingTime = (21*6);
+    int playingTime = (40*6);
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
