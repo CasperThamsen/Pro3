@@ -95,10 +95,6 @@ typedef struct{
 static paRecordData* Data; //opretter den globalt
 
 vector<char> freqVals; 
-//vector fucker lidt med alloceringen 
-//når den/vi ikke kender den endelige størrelse på forhånd
-//så lavede det til en alm global variabel i stedet.
-//Kan godt oprettes i main
 
 queue<double> callbackInfo; // kan tænkes som en vektor buffer der kan fjernes forfra
 bool TimingBool = false; //checker i FFT
@@ -224,9 +220,9 @@ char getMaxOccurringChar(vector<char> & nyTidCharVector){
 
 void checkForStartFlag(vector<char> CharVector) {
     const std::string startFlag = "159D";
-    const int sidsteTiNumer = 30; //4*3buffer = 12 så mindst se 10 tilbage
-    if ((CharVector.size() >= sidsteTiNumer)) {
-        std::string lastTones(CharVector.end() - sidsteTiNumer, CharVector.end());
+    const int lookBack = 30; 
+    if ((CharVector.size() >= lookBack)) {
+        std::string lastTones(CharVector.end() - lookBack, CharVector.end());
         if (checkPattern(lastTones, startFlag)) {
             std::cout << "Start flag detected!" << std::endl;
             TimingBool = true;
@@ -237,10 +233,10 @@ void checkForStartFlag(vector<char> CharVector) {
 }
 
 void checkForStopFlag(vector<char> CharVector) {
-    const std::string stopflag = "2*BD"; // skal laves om til en vi er sikker på ikke kan komme i ACII karaktere.
-    const int maxAntal = 4; //4*3buffer = 12 så mindst se 10 tilbage
-    if((CharVector.size() >= maxAntal)){
-        std::string lastTones(CharVector.end() - maxAntal, CharVector.end());
+    const std::string stopflag = "2*BD";
+    const int lookBack = 4;
+    if((CharVector.size() >= lookBack)){
+        std::string lastTones(CharVector.end() - lookBack, CharVector.end());
         if (checkPattern(lastTones, stopflag)) {
             std::cout << "stop flag detected!" << std::endl;
             Data->finished = paComplete;
@@ -250,8 +246,8 @@ void checkForStopFlag(vector<char> CharVector) {
 
 
 void genkendDTMFtoner(double stor, double lille, char& toneCharfound){     
-    double at = 25;//35 //Tilladt afvigelse
-    double atstor = 25; //63
+    double at = 25; //Tilladt afvigelse
+    double atstor = 25; 
 
     std::vector<double> freq{1209, 1336, 1477, 1633, 679, 770, 852, 941};
 
