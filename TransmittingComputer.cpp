@@ -218,7 +218,7 @@ int main(void){
     err = Pa_StartStream(stream);
     checkErr(err);
 
-    int playingTime = (240);
+    int playingTime = 40*6;
 
 //Afspiller startflag: 1 5 9 D
     for(int i = 0; i < vectorStartFlag.size(); i++){
